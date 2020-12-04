@@ -2,6 +2,11 @@
   "name": "insomnia-plugin-shuffled-input",
   "version": "0.0.1",
   "private": true,
+  "repository": "https://github.com/cursande/insomnia-plugin-shuffled-input",
+  "bugs": {
+    "url": "https://github.com/cursande/insomnia-plugin-shuffled-input/issues"
+  },
+  "homepage": "https://github.com/cursande/insomnia-plugin-shuffled-input#readme",
   "insomnia": {
     "name": "shuffled-input",
     "displayName": "Shuffled input",
