@@ -1,0 +1,18 @@
+{
+  "name": "insomnia-plugin-shuffled-input",
+  "version": "0.0.1",
+  "private": true,
+  "insomnia": {
+    "name": "shuffled-input",
+    "displayName": "Shuffled input",
+    "description": "Provide a shuffled array of inputs for requests"
+  },
+  "main": "main.js",
+  "keywords": [
+    "insomnia",
+    "plugin",
+    "shuffled",
+    "random",
+    "input"
+  ]
+}
