@@ -8,7 +8,7 @@ It can be useful to be able to carry out property-based testing during API devel
 
 ## Usage
 
-###### **Number of values** 
+**Number of values** 
 
 this will determine how values from your total set will be inserted as input. This number can be higher than the total number of values in your fixture file.
 
