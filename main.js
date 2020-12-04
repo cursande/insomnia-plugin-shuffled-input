@@ -1,5 +1,14 @@
 const fs = require('fs').promises;
 
+// TODO: Maybe would be nicer to ensure that wrapping is always required i.e. remove top level array markers
+const jsonSubset = (arr, n) => {
+  if (n == 1) {
+    return arr[0];
+  } else {
+    return arr.slice(0, n);
+  }
+}
+
 const templates = [
   {
     name: 'ShuffledInput',
@@ -7,21 +16,33 @@ const templates = [
     description: 'Provide a randomised subset of inputs',
     args: [
       {
-        displayName: 'Number of values',
-        defaultValue: 1,
-        type: 'number'
+        displayName: 'Type',
+        defaultValue: 'basic',
+        type: 'enum',
+        options: [
+          {
+            displayName: 'Basic value',
+            value: 'basic'
+          },
+          {
+            displayName: 'JSON value (e.g. for inserting arrays of objects into request bodies)',
+            value: 'json'
+          },
+        ]
       },
       {
         displayName: 'Path to JSON fixture (must be top-level array)',
         type: 'file'
       },
       {
-        displayName: 'As string? (e.g. if inserting inputs as url-encoded params)',
-        type: 'boolean'
-      },
+        displayName: 'Number of values',
+        defaultValue: 1,
+        type: 'number'
+      }
     ],
-    async run(context, n, fixturePath, asStringEnabled) {
+    async run(context, format, fixturePath, n) {
       const fixture = await fs.readFile(fixturePath, 'utf8');
+
       const arr = JSON.parse(fixture);
 
       // fisher-yates shuffle
@@ -35,10 +56,13 @@ const templates = [
         arr[i] = t;
       }
 
-      if (asStringEnabled) {
-        return JSON.stringify(arr.slice(0, n).toString());
-      } else {
-        return JSON.stringify(arr.slice(0, n));
+      switch (format) {
+        case 'basic':
+          return arr.slice(0, n);
+        case 'json':
+          return JSON.stringify(jsonSubset(arr, n));
+        default:
+          throw new Error(`Unknown format: "${format}"`);
       }
     }
   }
