@@ -2,9 +2,9 @@
 
 A plugin for inserting randomised subsets of arrays as inputs for the [Insomnia REST Client](https://insomnia.rest/).
 
-It can be useful to be able to carry out property-based testing during API development, and catch more subtle issues that application test suites may not uncover alone.
+It can be useful to be able to work with many dynamic inputs/examples during API development, and avoid missing more subtle issues that are hidden by the specific data you are testing with.
 
-![Screen Shot 2020-12-04 at 3 15 59 pm](https://user-images.githubusercontent.com/30610148/101121202-ab533d80-3643-11eb-98fc-40b9eb01862a.png)
+![Screen Shot 2020-12-07 at 5 33 41 pm](https://user-images.githubusercontent.com/30610148/101317338-6b45c200-38b2-11eb-93ff-87da5a0f263b.png)
 
 ## Usage
 
@@ -24,9 +24,17 @@ The `basic` output will be `123, 456, 789`. If you for instance want this value 
 
 Similarly, if selecting JSON, if you want a single object to be the result you will need to wrap it in an array `[]`, otherwise it is automatically wrapped.
 
+**Read fixture**
+
+Select whether you want to enter in possible values inline or read from a JSON file.
+
 **Path to JSON fixture**
 
-Select the path to the given fixture for this particular input. Multiple files can be used for multiple tags in a single request.
+Enter valid JSON array directly here. 
+
+**Path to JSON fixture**
+
+Select the path to the given fixture for this particular tag.
 
 **Number of values** 
 
