@@ -1,11 +1,20 @@
 const fs = require('fs').promises;
 
-// TODO: Maybe would be nicer to ensure that wrapping is always required i.e. remove top level array markers
-const jsonSubset = (arr, n) => {
+const formatJsonOutput = (arr, n) => {
   if (n == 1) {
     return arr[0];
   } else {
     return arr.slice(0, n);
+  }
+}
+
+const fixtureData = async (readFrom, inlineFixture, fixtureFilePath) => {
+  if (readFrom == 'inline') {
+    return JSON.parse(inlineFixture);
+  } else {
+    const fixture = await fs.readFile(fixtureFilePath, 'utf8');
+
+    return JSON.parse(fixture);
   }
 }
 
@@ -31,8 +40,29 @@ const templates = [
         ]
       },
       {
+        displayName: 'Read fixture',
+        type: 'enum',
+        defaultValue: 'inline',
+        options: [
+          {
+            displayName: 'Inline',
+            value: 'inline'
+          },
+          {
+            displayName: 'From file',
+            value: 'fromFile'
+          },
+        ]
+      },
+      {
+        displayName: 'Inline JSON fixture',
+        type: 'string',
+        hide: args => args[1].value != 'inline'
+      },
+      {
         displayName: 'Path to JSON fixture (must be top-level array)',
-        type: 'file'
+        type: 'file',
+        hide: args => args[1].value != 'fromFile'
       },
       {
         displayName: 'Number of values',
@@ -40,10 +70,8 @@ const templates = [
         type: 'number'
       }
     ],
-    async run(context, format, fixturePath, n) {
-      const fixture = await fs.readFile(fixturePath, 'utf8');
-
-      const arr = JSON.parse(fixture);
+    async run(context, type, readFrom, inlineFixture, fixtureFilePath, n) {
+      const arr = await fixtureData(readFrom, inlineFixture, fixtureFilePath);
 
       // fisher-yates shuffle
       var m = arr.length, t, i;
@@ -56,13 +84,13 @@ const templates = [
         arr[i] = t;
       }
 
-      switch (format) {
+      switch (type) {
         case 'basic':
           return arr.slice(0, n);
         case 'json':
-          return JSON.stringify(jsonSubset(arr, n));
+          return JSON.stringify(formatJsonOutput(arr, n));
         default:
-          throw new Error(`Unknown format: "${format}"`);
+          throw new Error(`Unknown type: "${format}"`);
       }
     }
   }
